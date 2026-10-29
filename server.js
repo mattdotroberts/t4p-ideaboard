@@ -130,6 +130,15 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Method not allowed', 'text/plain');
+  const asset = p.match(/^\/assets\/([a-z0-9._-]+\.(webp|svg|png|jpg))$/i);
+  if (asset) {
+    const types = { webp: 'image/webp', svg: 'image/svg+xml', png: 'image/png', jpg: 'image/jpeg' };
+    return fs.readFile(path.join(ROOT, 'assets', asset[1]), (err, data) => {
+      if (err) return send(res, 404, 'Not found', 'text/plain');
+      res.writeHead(200, { 'Content-Type': types[asset[2].toLowerCase()], 'Cache-Control': 'public, max-age=86400' });
+      res.end(data);
+    });
+  }
   if (p !== '/' && p !== '/index.html') return send(res, 404, 'Not found', 'text/plain');
   fs.readFile(path.join(ROOT, 'index.html'), (err, data) => {
     if (err) return send(res, 500, 'Missing index.html', 'text/plain');
