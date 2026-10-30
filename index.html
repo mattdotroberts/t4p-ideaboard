@@ -61,7 +61,7 @@
 
   /* ---------- hackathon promo ---------- */
   .promo{background:var(--ink);color:#fff;}
-  .promo .wrap{display:flex;align-items:center;gap:32px;padding-top:28px;padding-bottom:28px;}
+  .promo .wrap{display:flex;align-items:center;gap:32px;padding-top:20px;padding-bottom:20px;}
   .promo .txt{flex:1;min-width:0;}
   .promo .kicker{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:13px;padding:5px 12px;margin-bottom:12px;letter-spacing:.02em;}
   .promo h2{font-weight:800;font-size:clamp(24px,3vw,34px);line-height:1.1;letter-spacing:-.01em;}
@@ -74,22 +74,22 @@
   .promo .btn.ghost{background:transparent;border:1.5px solid #5a5a55;}
   .promo .btn.ghost:hover{border-color:#fff;background:transparent;}
   .promo .qr{flex:none;text-align:center;}
-  .promo .qr img{display:block;width:150px;height:150px;background:#fff;border-radius:8px;padding:6px;}
+  .promo .qr img{display:block;width:120px;height:120px;background:#fff;border-radius:8px;padding:6px;}
   .promo .qr span{display:block;margin-top:8px;font-size:12.5px;font-weight:700;color:#d9d6cd;}
   @media(max-width:640px){.promo .wrap{flex-direction:column;align-items:flex-start;gap:20px;}.promo .qr{display:none;}}
 
   /* ---------- hero ---------- */
-  .hero{padding:52px 0 30px;position:relative;}
+  .hero{padding:22px 0 0;position:relative;display:flex;align-items:baseline;gap:6px 14px;flex-wrap:wrap;}
   .badge{
     display:inline-block;background:var(--red);color:#fff;
     font-weight:500;font-size:14px;padding:8px 16px;margin-bottom:20px;
   }
   h1{
-    font-weight:800;font-size:clamp(34px,4.4vw,54px);
+    font-weight:800;font-size:20px;
     line-height:1.05;letter-spacing:-.02em;
   }
   h1 .slash{color:var(--red);}
-  .hero .sub{margin-top:16px;font-size:17.5px;color:var(--ink-soft);max-width:62ch;}
+  .hero .sub{font-size:15px;color:var(--ink-soft);}
   .hero .sub strong{color:var(--ink);}
   .scribble{position:absolute;right:6%;top:44px;width:190px;pointer-events:none;}
   @media(max-width:900px){.scribble{display:none;}}
@@ -299,8 +299,8 @@
   .ritem .racts{grid-column:2;grid-row:1 / span 2;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
 
   @media(max-width:640px){
-    .hero{padding:32px 0 20px;}
-    .hero .sub{font-size:16px;}
+    .hero{padding:18px 0 0;}
+    .hero .sub{font-size:14px;}
     .add{padding:20px 16px 22px;}
     .panelrow .btn{flex:1 1 100%;min-height:48px;}
     .count{margin-left:0;}
@@ -362,13 +362,8 @@
 
 <div class="wrap">
   <div class="hero">
-    <span class="badge">Public idea board</span>
     <h1><span class="slash">//</span> What should we build?</h1>
-    <p class="sub">Pin an idea for Saturday's hackathon before you arrive, or add yours on the day. <strong>Teams form around the ideas on this board at 11:00</strong>, so the earlier an idea is up, the more people will see it.</p>
-    <svg class="scribble" viewBox="0 0 400 120" fill="none" aria-hidden="true">
-      <path d="M10 96 C 70 60, 120 78, 168 58 S 250 26, 318 34" stroke="#E8442E" stroke-width="9" stroke-linecap="round"/>
-      <path d="M290 14 L 330 33 L 296 56" stroke="#E8442E" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    </svg>
+    <p class="sub">Pin an idea now or on the day. <strong>Teams form around these ideas at 11:00.</strong></p>
   </div>
 
   <div class="status">
