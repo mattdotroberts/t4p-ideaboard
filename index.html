@@ -142,6 +142,13 @@
   .add .hint{font-size:13.5px;color:var(--ink-soft);margin-top:12px;}
   .add .hint a{font-weight:700;color:var(--ink);text-decoration-color:var(--red);}
 
+  /* ---------- add popup ---------- */
+  .adddlg{border:none;padding:0;background:transparent;width:min(560px,calc(100% - 32px));max-width:none;margin:auto;overflow:visible;}
+  .adddlg::backdrop{background:rgba(17,17,17,.55);}
+  .adddlg .add{border-style:solid;border-color:var(--line);box-shadow:0 20px 50px rgba(0,0,0,.25);}
+  .dlgx{position:absolute;top:10px;right:12px;z-index:2;background:none;border:none;color:#fff;font-size:28px;line-height:1;cursor:pointer;font-family:var(--sans);}
+  .openadd{padding:9px 16px;font-size:14px;}
+
   /* ---------- board status ---------- */
   .status{margin:26px 0 8px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
   .status .n{font-weight:800;font-size:16px;}
@@ -350,7 +357,7 @@
       <p>One day to build tools that help people <strong>move off complicit tech to ethical alternatives</strong>. Developers, designers and non-coders all welcome. Lunch included.</p>
       <div class="cta">
         <a class="btn red" href="https://hackathon2026.techforpalestine.org/" target="_blank" rel="noopener">Get your ticket</a>
-        <a class="btn ghost" href="#idea">Pin an idea first</a>
+        <button type="button" class="btn ghost" data-openadd>Pin an idea</button>
       </div>
     </div>
     <div class="qr">
@@ -373,6 +380,7 @@
       <button type="button" data-sort="votes" aria-pressed="false">Most voted</button>
     </div>
     <span class="m" id="statusmsg" aria-live="polite">Loading…</span>
+    <button type="button" class="btn green openadd" data-openadd>+ Pin an idea</button>
   </div>
   <div class="adminbar" id="adminbar" hidden>
     <span class="tag">Admin</span>
@@ -385,7 +393,21 @@
   </div>
 
   <div class="board" id="board">
+    <div id="notes">
+      <div class="loading">Pinning up the board…</div>
+    </div>
+  </div>
+
+  <details class="removed" id="removedbox" hidden>
+    <summary>Removed (<span id="rcount">0</span>)</summary>
+    <p class="rmsg" id="rmsg" role="status" hidden></p>
+    <ul id="rlist"></ul>
+  </details>
+</div>
+
+<dialog class="adddlg" id="adddlg" aria-label="Pin your idea">
     <div class="add">
+      <button type="button" class="dlgx" id="addclose" aria-label="Close">×</button>
       <div class="corner" aria-hidden="true"></div>
       <h2><span class="slash">//</span> Pin your idea</h2>
       <label for="idea" class="sr" style="position:absolute;left:-9999px;">Your idea</label>
@@ -405,17 +427,7 @@
       <p class="pinmsg" id="pinmsg" role="alert" hidden></p>
       <p class="hint">Short and concrete works best: what it is, who it helps. Stuck? The challenge is <strong>migrating users from complicit tech to ethical alternatives</strong>.</p>
     </div>
-    <div id="notes">
-      <div class="loading">Pinning up the board…</div>
-    </div>
-  </div>
-
-  <details class="removed" id="removedbox" hidden>
-    <summary>Removed (<span id="rcount">0</span>)</summary>
-    <p class="rmsg" id="rmsg" role="status" hidden></p>
-    <ul id="rlist"></ul>
-  </details>
-</div>
+</dialog>
 
 <footer>
   <div class="wrap" style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:0;">
@@ -963,6 +975,14 @@
   // After a change, refresh straight away if we are on polling instead of the stream.
   function refreshIfPolling(){ if(!es || pollOn) load(); }
 
+  // ---------- add popup ----------
+  var addDlg = document.getElementById('adddlg');
+  function openAdd(){ if(addDlg.showModal) addDlg.showModal(); else addDlg.setAttribute('open',''); ideaEl.focus(); }
+  function closeAdd(){ if(addDlg.close) addDlg.close(); else addDlg.removeAttribute('open'); }
+  document.querySelectorAll('[data-openadd]').forEach(function(b){ b.addEventListener('click', openAdd); });
+  document.getElementById('addclose').addEventListener('click', closeAdd);
+  addDlg.addEventListener('click', function(ev){ if(ev.target === addDlg) closeAdd(); });
+
   // ---------- pinning ----------
   pinBtn.addEventListener('click', function(){
     var x = ideaEl.value.trim();
@@ -979,6 +999,7 @@
       saving = false;
       pinBtn.textContent = PIN_LABEL;
       onSuccess();
+      closeAdd();
       render();
       refreshIfPolling();
     }, function(err){
